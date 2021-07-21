@@ -1,7 +1,7 @@
 ########################
 # redirect.rules
 
-FROM FROM python:3.8.1-buster AS builder
+FROM python:3.8.1-buster AS builder
 
 RUN apt-get update
 
