@@ -1,0 +1,19 @@
+version: '3'
+services:
+
+########################
+# sneaky_proxy
+
+  preflight:
+    container_name: sneaky_proxy
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      network: host
+      args:
+        -  'REDIRECT_URL=${REDIRECT_URL}'
+        -  'PROXY_DOMAIN=${PROXY_DOMAIN}'
+        -  'HIDDEN_HOST=${HIDDEN_HOST}'
+    ports:
+      - 443:443
+    image: sneaky_proxy
