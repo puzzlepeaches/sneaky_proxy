@@ -1,5 +1,6 @@
 ########################
 # redirect.rules
+
 FROM python:3.8.1-buster AS builder
 
 ARG REDIRECT_URL
@@ -24,22 +25,25 @@ RUN chmod +x redirect_rules.py && \
 ADD ./exclude/ /redirect.rules/exclude/
 
 RUN ./redirect_rules.py -d https://${REDIRECT_URL} --exclude-file exclude/exclude.txt
+
+# Bad fix for an issue we are gonna have
 RUN sed -i -e '159d' /tmp/redirect.rules
 
 ########################
 # Apache
+
 FROM debian:stable-slim
 
+# Defining variables as args and then adding to the ENV
 ARG PROXY_DOMAIN
 ARG HIDDEN_HOST
 
 ENV PROXY_DOMAIN $PROXY_DOMAIN
 ENV HIDDEN_HOST $HIDDEN_HOST
 
-EXPOSE 443
-
-RUN apt update && apt install certbot apache2 git python-certbot-apache vim -y
-RUN a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests rewrite proxy proxy_ajp proxy_http rewrite deflate headers proxy_balancer proxy_connect proxy_html
+# Installing needed packages
+RUN apt update && apt install certbot apache2 git python-certbot-apache -y
+RUN a2enmod proxy_http proxy_balancer lbmethod_byrequests proxy proxy_ajp rewrite deflate headers proxy_connect proxy_html
 
 # Copying the latest redirect.rules over
 COPY --from=builder /tmp/redirect.rules /etc/apache2/redirect.rules
@@ -69,10 +73,5 @@ RUN echo '</IfModule>' >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 # Updating redirect.rules
 RUN sed -i '27 s/#//' /etc/apache2/redirect.rules
 RUN sed -i -e '159d' /etc/apache2/redirect.rules
-# RUN echo '\t' RewriteRule                           ^.*$             https://${HIDDEN_HOST}/                 [P] >> /etc/apache2/redirect.rules
-# RUN echo ProxyPreserveHost On >> /etc/apache2/redirect.rules
-# RUN echo ProxyPass / https://${HIDDEN_HOST}/ >> /etc/apache2/redirect.rules
-# RUN echo ProxyPassReverse / https://${HIDDEN_HOST}/ >> /etc/apache2/redirect.rules
-# RUN echo 'RewriteRule                           ^.*$                                    [P]' >> /etc/apache2/redirect.rules
 
 CMD apachectl -D BACKGROUND && tail -f /var/log/apache2/error.log -f /var/log/apache2/access.log
