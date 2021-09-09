@@ -2,7 +2,7 @@
 
 Hiding infrastructure from the boys in blue! See my blog article linked below for details on how all this works:
 
-* COMING SOON
+* [Never stop frontin](https://www.sprocketsecurity.com/blog/never-stop-frontin-how-to-quickly-setup-a-redirector-and-transparent-reverse-proxy)
 
 # Why?
 
