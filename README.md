@@ -22,6 +22,7 @@ Following this, modify the included .env file to reflect your desired configurat
 REDIRECT_URL=outlook.office365.com
 PROXY_DOMAIN=example.com
 HIDDEN_HOST=test.example.com
+PROTO=https
 ```
 
 Let's say you want to redirect undesireable traffic to outlook.office365.com, have an DNS A record of acme.com assigned to your host and a GoPhish server hosted somewhere else with the subdomain mail.acme.com. Your configuration file will then appear like the following:
@@ -30,6 +31,7 @@ Let's say you want to redirect undesireable traffic to outlook.office365.com, ha
 REDIRECT_URL=outlook.office365.com
 PROXY_DOMAIN=acme.com
 HIDDEN_HOST=mail.acme.com
+PROTO=https
 ```
 
 Once you have modified your configuration file to meet your needs, execute the following command to build the container:

@@ -37,9 +37,11 @@ FROM debian:stable-slim
 # Defining variables as args and then adding to the ENV
 ARG PROXY_DOMAIN
 ARG HIDDEN_HOST
+ARG PROTO
 
 ENV PROXY_DOMAIN $PROXY_DOMAIN
 ENV HIDDEN_HOST $HIDDEN_HOST
+ENV PROTO $PROTO
 
 # Installing needed packages
 RUN apt update && apt install certbot apache2 git python-certbot-apache -y
@@ -65,8 +67,8 @@ RUN echo '\t' SSLProxyVerify none >> /etc/apache2/sites-enabled/000-default-le-s
 RUN echo '\t' SSLProxyCheckPeerCN off >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 RUN echo '\t' SSLProxyCheckPeerName off >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 RUN echo '\t' SSLProxyCheckPeerExpire off >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
-RUN echo '\t' ProxyPass / https://${HIDDEN_HOST}/ >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
-RUN echo '\t' ProxyPassReverse / https://${HIDDEN_HOST}/ >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
+RUN echo '\t' ProxyPass / ${PROTO}://${HIDDEN_HOST}/ >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
+RUN echo '\t' ProxyPassReverse / ${PROTO}://${HIDDEN_HOST}/ >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 RUN echo '</VirtualHost>' >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 RUN echo '</IfModule>' >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 
