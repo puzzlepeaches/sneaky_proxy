@@ -42,7 +42,7 @@ ENV PROXY_DOMAIN $PROXY_DOMAIN
 ENV HIDDEN_HOST $HIDDEN_HOST
 
 # Installing needed packages
-RUN apt update && apt install certbot apache2 git python-certbot-apache -y
+RUN apt update && apt install certbot apache2 git python3-certbot-apache -y
 RUN a2enmod proxy_http proxy_balancer lbmethod_byrequests proxy proxy_ajp rewrite deflate headers proxy_connect proxy_html
 
 # Copying the latest redirect.rules over
