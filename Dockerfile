@@ -65,8 +65,8 @@ RUN echo '\t' SSLProxyVerify none >> /etc/apache2/sites-enabled/000-default-le-s
 RUN echo '\t' SSLProxyCheckPeerCN off >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 RUN echo '\t' SSLProxyCheckPeerName off >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 RUN echo '\t' SSLProxyCheckPeerExpire off >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
-RUN echo '\t' ProxyPass / https://${HIDDEN_HOST}/ >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
-RUN echo '\t' ProxyPassReverse / https://${HIDDEN_HOST}/ >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
+RUN echo '\t' ProxyPass / http://${HIDDEN_HOST}/ >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
+RUN echo '\t' ProxyPassReverse / http://${HIDDEN_HOST}/ >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 RUN echo '</VirtualHost>' >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 RUN echo '</IfModule>' >> /etc/apache2/sites-enabled/000-default-le-ssl.conf
 
